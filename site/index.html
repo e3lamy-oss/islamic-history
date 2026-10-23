@@ -48,7 +48,7 @@
     <span><span id="statLine"></span> · <span id="zoomLabel"></span></span>
     <div class="acts">
       <button class="btn" id="aboutBtn2">عن المشروع والمصادر</button>
-      <button class="btn primary" id="reportBtn">إبلاغ / تصحيح معلومة</button>
+      <button class="btn primary star-border" id="reportBtn">إبلاغ / تصحيح معلومة</button>
     </div>
   </footer>
 </div>
@@ -58,9 +58,16 @@
 <div class="modal" id="about" hidden role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
   <div class="sheet">
     <header><h2 id="aboutTitle">عن المشروع والمصادر</h2><button class="close" data-close aria-label="إغلاق">×</button></header>
-    <div class="content prose">
+    <div class="content">
+     <div class="prose">
       <h3>فكرة المشروع</h3>
       <p>لوحة واحدة تجمع التاريخ الإسلامي منذ عام الجماعة (41 هـ / 661 م). المحور الرأسي هو الزمن بالسنوات الهجرية مع ما يقابلها ميلادياً، والمسارات الأفقية هي الدول والخلافات. حين تتعاصر دولتان تظهران مسارين متوازيين عند السنوات نفسها، فتقرأ ما كان يجري في بغداد وقرطبة والقاهرة في لحظة واحدة.</p>
+      <div class="stats" aria-label="أرقام المشروع">
+        <div><b data-count="rulers">82</b><span>حاكماً</span></div>
+        <div><b data-count="dynasties">5</b><span>دولة</span></div>
+        <div><b data-count="scholars">31</b><span>عالماً</span></div>
+        <div><b data-count="events">34</b><span>حدثاً فاصلاً</span></div>
+      </div>
       <h3>منهجية العمل</h3>
       <ul>
         <li><b>تداول الحكم:</b> يُعتمد خيار «الخلافة» في ترتيب تداول الحكم، ويُذكر كل حاكم بفترة حكمه ومقر حكمه وأبرز ما وقع في عهده.</li>
@@ -79,6 +86,7 @@
       <h3>حالة البيانات</h3>
       <p>هذه نسخة أولى تضم الأموية، وخلافة ابن الزبير، والعباسية في بغداد، وأموية الأندلس، والفاطمية. جميع السجلات الآن بحالة «مسودة» حتى تتم مراجعتها على المصادر. الدول التالية في خطة الإدخال: العباسية في القاهرة، والمماليك، والعثمانية، والمرابطون والموحدون، والسلاجقة وغيرها.</p>
       <p>إن وجدت خطأ فاستخدم زر «إبلاغ / تصحيح معلومة» في أي بطاقة أو أسفل الصفحة.</p>
+     </div>
     </div>
   </div>
 </div>
@@ -120,6 +128,10 @@
 </div>
 <!-- BODY END -->
 <script src="data.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
 <script src="app.js"></script>
+<script src="motion.js"></script>
 </body>
 </html>

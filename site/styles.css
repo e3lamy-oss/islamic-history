@@ -219,3 +219,25 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .hint { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .drawer { transition: none; } }
+
+/* ---------- حركات بصرية (motion.js) ---------- */
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0; }
+.stats > div { background: var(--raised); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 2px; }
+.stats b { font-family: var(--f-display); font-size: 26px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.stats span { font-size: 13px; color: var(--muted); }
+
+/* حدّ متحرك حول زر الإبلاغ */
+.star-border { position: relative; overflow: hidden; isolation: isolate; border-color: transparent; }
+.star-border::before { content: ""; position: absolute; left: 50%; top: 50%; width: 180%; aspect-ratio: 1; translate: -50% -50%; z-index: -2; background: conic-gradient(from 0deg, transparent 0 75%, var(--focus) 84%, transparent 92%); animation: star-spin 4s linear infinite; }
+.star-border::after { content: ""; position: absolute; inset: 1px; border-radius: inherit; z-index: -1; background: var(--accent); }
+@keyframes star-spin { to { transform: rotate(360deg); } }
+
+/* أشعة ضوئية خفيفة خلف الشريط العلوي */
+.bar::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: repeating-conic-gradient(from 0deg at 50% 0%, transparent 0 7deg, color-mix(in srgb, var(--accent) 9%, transparent) 9deg 12deg); mask-image: linear-gradient(to bottom, #000 0%, transparent 90%); animation: rays-pulse 9s ease-in-out infinite; }
+@keyframes rays-pulse { 50% { opacity: 0.45; } }
+
+.bw { display: inline-block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .star-border::before, .bar::before { animation: none; }
+}
