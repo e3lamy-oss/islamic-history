@@ -39,8 +39,9 @@ export async function onRequestPost({ request, env }) {
   const type = clean(data.type, 20);
   const details = clean(data.details, LIMITS.details);
   if (!TYPES.has(type)) return json(400, { error: "invalid" });
-  const email = clean(data.email, LIMITS.email);
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json(400, { error: "invalid_email" });
+  // البريد اختياري: إن لم يكن صالحاً نحفظ الملاحظة بدونه بدلاً من رفضها
+  const rawEmail = clean(data.email, LIMITS.email);
+  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail) ? rawEmail : "";
 
   // 5) Turnstile
   const ip = request.headers.get("CF-Connecting-IP") || "";
