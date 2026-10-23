@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=Reem+Kufi:wght@500;600&display=swap">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="sponsor.css">
 <!-- TURNSTILE -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <!-- /TURNSTILE -->
@@ -36,6 +37,8 @@
       <button class="btn text" id="aboutBtn">عن المشروع والمصادر</button>
     </div>
   </header>
+
+  <aside class="sponsor" id="sponsor" aria-label="الراعي السنوي" hidden></aside>
 
   <main class="stage" id="stage" aria-label="اللوحة الزمنية">
     <div class="layer" id="layer"></div>
@@ -131,6 +134,7 @@
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
+<script src="sponsor.js"></script>
 <script src="app.js"></script>
 <script src="motion.js"></script>
 </body>

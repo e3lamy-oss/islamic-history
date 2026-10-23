@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>بنر الرعاية</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="sponsor-admin.css">
+</head>
+<body>
+<header>
+  <h1>بنر الرعاية السنوية</h1>
+  <nav><a class="navlink" href="./">← لوحة مراجعة الملاحظات</a></nav>
+</header>
+<main>
+  <form id="spForm" class="sp-form" novalidate>
+    <label class="sp-switch"><input type="checkbox" id="spEnabled"> إظهار البنر في الموقع</label>
+    <label>اسم الجهة الراعية *<input id="spName" maxlength="80" required></label>
+    <label>الجملة التعريفية<input id="spTagline" maxlength="200" placeholder="بدعم من … لنشر المحتوى المعرفي"></label>
+    <label>رابط موقع الراعي * (يبدأ بـ https://)<input id="spUrl" type="url" maxlength="500" required dir="ltr" placeholder="https://"></label>
+    <div class="sp-row">
+      <label>نص الشارة<input id="spBadge" maxlength="40" placeholder="برعاية رسمية"></label>
+      <label>نص الزر<input id="spCta" maxlength="30" placeholder="اكتشف المزيد"></label>
+    </div>
+    <fieldset class="sp-logo">
+      <legend>الشعار (اختياري: PNG أو JPEG أو WebP، حتى 100 كيلوبايت)</legend>
+      <img id="spLogoImg" alt="" hidden>
+      <input type="file" id="spLogoFile" accept="image/png,image/jpeg,image/webp">
+      <button type="button" id="spLogoClear">إزالة الشعار</button>
+    </fieldset>
+    <p class="sp-msg" id="spMsg" role="status" aria-live="polite"></p>
+    <p class="sp-meta" id="spMeta"></p>
+    <div class="acts"><button type="submit" class="ok" id="spSave">حفظ</button></div>
+  </form>
+</main>
+<script src="sponsor-admin.js"></script>
+</body>
+</html>
