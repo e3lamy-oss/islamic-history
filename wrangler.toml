@@ -1,0 +1,16 @@
+name = "islamic-history"
+pages_build_output_dir = "site"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "islamic-history-feedback"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# أسرار تُضبط من لوحة Cloudflare أو بالأمر `wrangler pages secret put` ولا تُكتب هنا أبداً:
+#   TURNSTILE_SECRET, IP_SALT
+# متغيرات غير سرية:
+[vars]
+ACCESS_TEAM = "REPLACE_WITH_ACCESS_TEAM_NAME"
+ACCESS_AUD = "REPLACE_WITH_ACCESS_APPLICATION_AUD"
+ADMIN_EMAILS = ""

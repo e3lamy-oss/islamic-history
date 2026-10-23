@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مسارات التاريخ الإسلامي</title>
+<meta name="description" content="لوحة تفاعلية للتاريخ الإسلامي من عام الجماعة 41 هـ: الدول المتعاصرة والحكام والعلماء والأحداث الفاصلة على خط زمني واحد.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=Reem+Kufi:wght@500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<!-- TURNSTILE -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<!-- /TURNSTILE -->
+</head>
+<body>
+<!-- BODY START -->
+<div class="app">
+  <header class="bar">
+    <div class="brand"><h1>مسارات التاريخ الإسلامي</h1><span>من عام الجماعة 41 هـ</span></div>
+    <div class="search">
+      <input id="q" type="search" placeholder="ابحث عن خليفة أو عالم أو حدث، أو اكتب سنة هجرية" aria-label="بحث" autocomplete="off">
+      <div class="results" id="results" hidden></div>
+    </div>
+    <div class="chips" role="group" aria-label="تصفية">
+      <button class="chip" data-filter="ruler" aria-pressed="true"><i></i>الحكام</button>
+      <button class="chip" data-filter="scholar" aria-pressed="true"><i></i>العلماء</button>
+      <button class="chip" data-filter="battle" aria-pressed="true">⚔️ معارك</button>
+      <button class="chip" data-filter="city" aria-pressed="true">🏰 مدن</button>
+      <button class="chip" data-filter="reform" aria-pressed="true">📜 إصلاحات</button>
+      <button class="chip" data-filter="calamity" aria-pressed="true">⚠️ نكبات</button>
+    </div>
+    <div class="tools">
+      <button class="btn icon" id="zin" aria-label="تكبير">+</button>
+      <button class="btn icon" id="zout" aria-label="تصغير">−</button>
+      <button class="btn text" id="aboutBtn">عن المشروع والمصادر</button>
+    </div>
+  </header>
+
+  <main class="stage" id="stage" aria-label="اللوحة الزمنية">
+    <div class="layer" id="layer"></div>
+    <div class="heads" id="heads"></div>
+    <div class="axis" id="axis"></div>
+    <div class="hint">اسحب للتنقل · Ctrl + العجلة أو القرص بإصبعين للتكبير</div>
+  </main>
+
+  <footer class="foot">
+    <span><span id="statLine"></span> · <span id="zoomLabel"></span></span>
+    <div class="acts">
+      <button class="btn" id="aboutBtn2">عن المشروع والمصادر</button>
+      <button class="btn primary" id="reportBtn">إبلاغ / تصحيح معلومة</button>
+    </div>
+  </footer>
+</div>
+
+<aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dTitle"></aside>
+
+<div class="modal" id="about" hidden role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+  <div class="sheet">
+    <header><h2 id="aboutTitle">عن المشروع والمصادر</h2><button class="close" data-close aria-label="إغلاق">×</button></header>
+    <div class="content prose">
+      <h3>فكرة المشروع</h3>
+      <p>لوحة واحدة تجمع التاريخ الإسلامي منذ عام الجماعة (41 هـ / 661 م). المحور الرأسي هو الزمن بالسنوات الهجرية مع ما يقابلها ميلادياً، والمسارات الأفقية هي الدول والخلافات. حين تتعاصر دولتان تظهران مسارين متوازيين عند السنوات نفسها، فتقرأ ما كان يجري في بغداد وقرطبة والقاهرة في لحظة واحدة.</p>
+      <h3>منهجية العمل</h3>
+      <ul>
+        <li><b>تداول الحكم:</b> يُعتمد خيار «الخلافة» في ترتيب تداول الحكم، ويُذكر كل حاكم بفترة حكمه ومقر حكمه وأبرز ما وقع في عهده.</li>
+        <li><b>الوقائع الخلافية:</b> تُعرض بإيجاز وحياد، بذكر الواقعة دون ترجيح، مع الإشارة إلى اختلاف المصادر حيث يقع.</li>
+        <li><b>التواريخ:</b> لكل سجل سنتاه الهجرية والميلادية مدخلتين صراحةً. أما الأرقام الميلادية على المحور فتقريبية للتوجيه فقط. وتعني العلامة «~» أن التاريخ تقريبي في المصادر.</li>
+        <li><b>المراجعة:</b> كل سجل يمر بمراجعة منهجية على المصادر قبل اعتماده، وتظهر حالته في بطاقته.</li>
+      </ul>
+      <h3>معايير الاختيار</h3>
+      <ul>
+        <li><b>الحكام:</b> الشمول التام لجميع الخلفاء والحكام في كل دولة مدرجة، دون استثناء.</li>
+        <li><b>العلماء:</b> المعيار التأسيسي (أصحاب المذاهب وكتب الحديث الأمهات ومؤسسو العلوم)، والمعيار التأثيري الموسوعي، ومعيار الريادة العلمية التجريبية، مع ربط كل عالم بالمدينة التي برز فيها.</li>
+        <li><b>الأحداث:</b> ⚔️ المعارك الفاصلة والفتوحات الكبرى، 🏰 تأسيس المدن والعواصم، 📜 الإصلاحات الإدارية والعلمية، ⚠️ النكبات والتحولات الاجتماعية.</li>
+      </ul>
+      <h3>المصادر المعتمدة</h3>
+      <ol id="srcList"></ol>
+      <h3>حالة البيانات</h3>
+      <p>هذه نسخة أولى تضم الأموية، وخلافة ابن الزبير، والعباسية في بغداد، وأموية الأندلس، والفاطمية. جميع السجلات الآن بحالة «مسودة» حتى تتم مراجعتها على المصادر. الدول التالية في خطة الإدخال: العباسية في القاهرة، والمماليك، والعثمانية، والمرابطون والموحدون، والسلاجقة وغيرها.</p>
+      <p>إن وجدت خطأ فاستخدم زر «إبلاغ / تصحيح معلومة» في أي بطاقة أو أسفل الصفحة.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="feedback" hidden role="dialog" aria-modal="true" aria-labelledby="fbTitle">
+  <div class="sheet">
+    <header><h2 id="fbTitle">إبلاغ / تصحيح معلومة</h2><button class="close" data-close aria-label="إغلاق">×</button></header>
+    <div class="content">
+      <form class="form" id="fbForm" novalidate>
+        <label for="fbType">نوع الملاحظة
+          <select id="fbType" name="type" required>
+            <option value="historical">خطأ تاريخي</option>
+            <option value="spelling">خطأ إملائي</option>
+            <option value="add_scholar">اقتراح إضافة عالم</option>
+            <option value="add_event">اقتراح إضافة حدث</option>
+            <option value="other">أخرى</option>
+          </select>
+        </label>
+        <label for="fbItem">العنصر المعني
+          <input id="fbItem" name="item_label" maxlength="200" placeholder="مثال: هارون الرشيد (170 هـ)">
+        </label>
+        <input type="hidden" id="fbItemKey" name="item_key">
+        <label for="fbDetails">التفاصيل
+          <textarea id="fbDetails" name="details" maxlength="3000" required placeholder="ما الخطأ أو الإضافة المقترحة؟"></textarea>
+        </label>
+        <label for="fbSource">المصدر المقترح
+          <input id="fbSource" name="source" maxlength="500" placeholder="اسم الكتاب والجزء والصفحة إن أمكن">
+        </label>
+        <label for="fbEmail">بريدك للتواصل (اختياري)
+          <input id="fbEmail" name="email" type="email" maxlength="200" autocomplete="email">
+        </label>
+        <div class="hp" aria-hidden="true"><label for="fbWebsite">اترك هذا الحقل فارغاً<input id="fbWebsite" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <!-- TURNSTILE --><div class="cf-turnstile" data-sitekey="__TURNSTILE_SITE_KEY__" data-language="ar"></div><!-- /TURNSTILE -->
+        <div class="msg" id="fbMsg" hidden></div>
+        <div class="row"><button class="btn primary" id="fbSend" type="submit">إرسال الملاحظة</button><button class="btn" type="button" data-close>إلغاء</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- BODY END -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

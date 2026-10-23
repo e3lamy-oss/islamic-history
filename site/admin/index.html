@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>لوحة المراجعة</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<header>
+  <h1>لوحة مراجعة الملاحظات</h1>
+  <nav id="tabs">
+    <button data-s="new" aria-pressed="true">جديدة</button>
+    <button data-s="reviewing" aria-pressed="false">قيد المراجعة</button>
+    <button data-s="accepted" aria-pressed="false">مقبولة</button>
+    <button data-s="rejected" aria-pressed="false">مرفوضة</button>
+  </nav>
+</header>
+<main id="list" aria-live="polite"></main>
+<template id="card">
+  <article>
+    <div class="meta"><span class="type"></span><span class="date"></span></div>
+    <h2 class="item"></h2>
+    <p class="details"></p>
+    <p class="source"></p>
+    <p class="email"></p>
+    <label>ملاحظة المراجع <textarea class="note" maxlength="1000"></textarea></label>
+    <div class="acts">
+      <button data-to="reviewing">قيد المراجعة</button>
+      <button data-to="accepted" class="ok">قبول</button>
+      <button data-to="rejected" class="no">رفض</button>
+    </div>
+  </article>
+</template>
+<script src="admin.js"></script>
+</body>
+</html>
