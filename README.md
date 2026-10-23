@@ -28,7 +28,7 @@
 
 1. أنشئ مشروع Pages مرتبطاً بهذا المستودع، ومجلد الإخراج `site`. ربط D1 والمتغيرات معرَّف في `wrangler.toml`، والأسرار وحدها تُضبط من لوحة Cloudflare.
 2. `npx wrangler d1 create islamic-history-feedback` ثم ضع المعرّف في `wrangler.toml`، ثم `npx wrangler d1 execute islamic-history-feedback --remote --file=db/schema.sql`.
-3. أنشئ Turnstile widget وضع المفتاح العام مكان `__TURNSTILE_SITE_KEY__` في `site/index.html`، والسري في `TURNSTILE_SECRET`.
+3. Turnstile: المفتاح العام موضوع في `site/index.html`، والسري في السر `TURNSTILE_SECRET`.
 4. أضف `IP_SALT` (نص عشوائي طويل) كسر.
 5. في Zero Trust أنشئ تطبيق Access للمسار `/admin/*` مع سياسة تفرض التحقق الثنائي، وضع `ACCESS_TEAM` و`ACCESS_AUD` و`ADMIN_EMAILS`.
 6. لنسخ الاحتياط: أنشئ حاوية R2 `islamic-history-backups` ومفتاح age، وأضف أسرار GitHub المذكورة في ملف العمل.
