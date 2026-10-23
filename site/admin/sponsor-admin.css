@@ -1,0 +1,13 @@
+.navlink { color: var(--accent); text-decoration: none; }
+.sp-form { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; max-width: 640px; }
+.sp-form input:not([type="checkbox"]):not([type="file"]) { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; }
+.sp-switch { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 15px; font-weight: 600; }
+.sp-switch input { width: 18px; height: 18px; }
+.sp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sp-logo { border: 1px dashed var(--line); border-radius: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+.sp-logo img { height: 36px; max-width: 140px; object-fit: contain; background: var(--bg); border-radius: 6px; padding: 4px; }
+.sp-msg { font-weight: 600; }
+.sp-msg.err { color: var(--no); }
+.sp-msg.done { color: var(--ok); }
+.sp-meta { color: var(--muted); font-size: 13px; }
+@media (max-width: 560px) { .sp-row { grid-template-columns: 1fr; } }
