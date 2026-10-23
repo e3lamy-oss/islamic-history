@@ -13,10 +13,13 @@
     zirikli: { title: "الأعلام", author: "خير الدين الزركلي (ت 1396 هـ)" },
     idhari: { title: "البيان المغرب في أخبار الأندلس والمغرب", author: "ابن عذاري المراكشي" },
     maqrizi: { title: "اتعاظ الحنفا بأخبار الأئمة الفاطميين الخلفا", author: "المقريزي (ت 845 هـ)" },
-    bosworth: { title: "The New Islamic Dynasties (مرجع حديث لجداول الأسر الحاكمة)", author: "C. E. Bosworth، 1996" }
+    bosworth: { title: "The New Islamic Dynasties (مرجع حديث لجداول الأسر الحاكمة)", author: "C. E. Bosworth، 1996" },
+    raheeq: { title: "الرحيق المختوم", author: "صفي الرحمن المباركفوري (ت 1427 هـ)" },
+    ibnhisham: { title: "السيرة النبوية", author: "ابن هشام (ت 218 هـ)" }
   };
 
   const DYNASTIES = [
+    { id: "rashidun", name: "الخلافة الراشدة", short: "الراشدون", color: "--d-rashidun", cap: "المدينة ثم الكوفة", src: ["tabari", "athir", "kathir", "raheeq"] },
     { id: "umayyad", name: "الخلافة الأموية", short: "الأموية", color: "--d-umayyad", cap: "دمشق", src: ["tabari", "athir", "bosworth"] },
     { id: "zubayr", name: "خلافة عبد الله بن الزبير", short: "ابن الزبير", color: "--d-zubayr", cap: "مكة", src: ["tabari", "athir", "dhahabi"] },
     { id: "abbasid", name: "الخلافة العباسية (بغداد)", short: "العباسية", color: "--d-abbasid", cap: "بغداد", src: ["tabari", "athir", "kathir", "bosworth"] },
@@ -26,6 +29,13 @@
 
   // [المعرف، الاسم، الاسم الكامل، بداية هـ، نهاية هـ، بداية م، نهاية م، مقر الحكم، أبرز الأحداث والإنجازات، ملاحظة]
   const R = {
+    rashidun: [
+      ["abubakr", "أبو بكر الصديق", "عبد الله بن أبي قحافة التيمي", 11, 13, 632, 634, "المدينة المنورة", "حروب الردة وتوحيد الجزيرة؛ جمع القرآن في صحف بأمره؛ بدء فتوح الشام", ""],
+      ["umar1", "عمر بن الخطاب", "عمر بن الخطاب بن نفيل العدوي", 13, 23, 634, 644, "المدينة المنورة", "فتح بيت المقدس والقادسية والمدائن ومصر؛ تأسيس التقويم الهجري (17 هـ)؛ تدوين الدواوين", ""],
+      ["uthman", "عثمان بن عفان", "عثمان بن عفان بن أبي العاص الأموي", 23, 35, 644, 656, "المدينة المنورة", "جمع الناس على مصحف واحد؛ توسع الفتوحات في إفريقية وخراسان؛ وقعت في آخر عهده الفتنة التي أدت إلى مقتله (35 هـ)", ""],
+      ["ali", "علي بن أبي طالب", "علي بن أبي طالب بن عبد المطلب الهاشمي", 35, 40, 656, 661, "الكوفة", "وقعة الجمل (36 هـ)، وصفين (37 هـ)، والنهروان (38 هـ)؛ استشهد سنة 40 هـ", ""],
+      ["hasan1", "الحسن بن علي", "الحسن بن علي بن أبي طالب", 40, 41, 661, 661, "الكوفة", "تنازل عن الخلافة لمعاوية بالصلح في عام الجماعة 41 هـ", "حكم نحو ستة أشهر بعد استشهاد أبيه"]
+    ],
     umayyad: [
       ["muawiya1", "معاوية بن أبي سفيان", "معاوية بن أبي سفيان صخر بن حرب الأموي", 41, 60, 661, 680, "دمشق", "تأسيس الدولة الأموية واتخاذ دمشق عاصمة؛ إنشاء ديوان الخاتم وتنظيم البريد؛ تقوية الأسطول البحري؛ تأسيس القيروان على يد عقبة بن نافع (50 هـ)"],
       ["yazid1", "يزيد بن معاوية", "يزيد بن معاوية بن أبي سفيان", 60, 64, 680, 683, "دمشق", "شهد عهده وقعة كربلاء (61 هـ) ووقعة الحرة (63 هـ) وحصار مكة الأول؛ استمرار الفتوحات في المغرب"],
@@ -121,7 +131,7 @@
     ]
   };
 
-  const RULER_SRC = { umayyad: ["tabari", "athir", "zirikli"], zubayr: ["tabari", "athir", "dhahabi"], abbasid: ["athir", "kathir", "zirikli"], andalus: ["idhari", "khaldun", "zirikli"], fatimid: ["maqrizi", "athir", "zirikli"] };
+  const RULER_SRC = { rashidun: ["tabari", "athir", "raheeq"], umayyad: ["tabari", "athir", "zirikli"], zubayr: ["tabari", "athir", "dhahabi"], abbasid: ["athir", "kathir", "zirikli"], andalus: ["idhari", "khaldun", "zirikli"], fatimid: ["maqrizi", "athir", "zirikli"] };
 
   const rulers = [];
   for (const d of DYNASTIES) {
@@ -206,5 +216,5 @@
   ];
   const scholars = S.map(([id, name, full, h0, h1, g0, g1, city, field, crit, work, approx]) => ({ kind: "scholar", id, name, full, h: [h0, h1], g: [g0, g1], city, field, crit, work, approx: !!approx, src: ["dhahabi", "zirikli"], status: "draft" }));
 
-  window.HISTORY_DATA = { SOURCES, DYNASTIES, rulers, events, scholars, range: [41, 910] };
+  window.HISTORY_DATA = { SOURCES, DYNASTIES, rulers, events, scholars, range: [1, 910] };
 })();
