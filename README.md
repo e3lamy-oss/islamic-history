@@ -8,8 +8,8 @@
 |---|---|---|
 | الواجهة | HTML/CSS/JS بلا إطار عمل (`site/`) | سريعة، بلا اعتماديات تُخترق، تُخدَم ملفات ثابتة |
 | البيانات التاريخية | ملف ثابت `site/data.js` داخل المستودع | قراءة فقط بطبيعتها: لا يوجد أي مسار عام يستعلم قاعدة بيانات، فلا مجال لحقن SQL في المحتوى التاريخي. كل تعديل يمر بطلب دمج في Git، فيكون لكل تغيير سجل ومراجعة |
-| الاستضافة | Cloudflare Workers مع الملفات الثابتة (Static Assets) | HTTPS إلزامي، حماية DDoS، جدار حماية WAF، شبكة توزيع عالمية |
-| واجهة الملاحظات | `functions/api/feedback.js` يستدعيه `worker/index.js` | تحقق من المصدر، Turnstile، تحديد معدل، استعلامات مُعدّة |
+| الاستضافة | Cloudflare Pages (`islamic-history-8ml.pages.dev`) | HTTPS إلزامي، حماية DDoS، جدار حماية WAF، شبكة توزيع عالمية |
+| واجهة الملاحظات | Pages Function (`functions/api/feedback.js`) | تحقق من المصدر، Turnstile، تحديد معدل، استعلامات مُعدّة |
 | قاعدة الملاحظات | Cloudflare D1 (`db/schema.sql`) | للملاحظات وسجل التدقيق فقط |
 | لوحة الإدارة | `site/admin/` + `functions/admin/` خلف Cloudflare Access | تسجيل دخول بتحقق ثنائي إلزامي على الحافة، ثم تحقق ثانٍ من توقيع الرمز داخل الكود |
 | النسخ الاحتياطي | GitHub Actions يومياً (`.github/workflows/backup.yml`) | تصدير D1 مشفّر بـ age إلى R2، إضافة إلى الاسترجاع الزمني المدمج في D1 |
@@ -26,7 +26,7 @@
 
 ## خطوات التشغيل على Cloudflare
 
-1. مشروع Worker باسم `islamic-history` مرتبط بهذا المستودع، وأمر النشر `npx wrangler deploy`. ربط D1 والمتغيرات معرَّف في `wrangler.toml`، والأسرار وحدها تُضبط من لوحة Cloudflare.
+1. مشروع Pages مرتبط بهذا المستودع، ومجلد الإخراج `site`. ربط D1 والمتغيرات معرَّف في `wrangler.toml`، والأسرار وحدها تُضبط من لوحة Cloudflare.
 2. `npx wrangler d1 create islamic-history-feedback` ثم ضع المعرّف في `wrangler.toml`، ثم `npx wrangler d1 execute islamic-history-feedback --remote --file=db/schema.sql`.
 3. Turnstile: المفتاح العام موضوع في `site/index.html`، والسري في السر `TURNSTILE_SECRET`.
 4. أضف `IP_SALT` (نص عشوائي طويل) كسر.
@@ -35,7 +35,7 @@
 
 ## التشغيل محلياً
 
-افتح `site/index.html` مباشرة في المتصفح لتصفح اللوحة. لتجربة واجهة الملاحظات: `npx wrangler dev`.
+افتح `site/index.html` مباشرة في المتصفح لتصفح اللوحة. لتجربة واجهة الملاحظات: `npx wrangler pages dev`.
 
 ## منهج البيانات
 
