@@ -1,0 +1,16 @@
+name = "islamic-history"
+pages_build_output_dir = "site"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "islamic-history-feedback"
+database_id = "02f72066-2cf9-48a4-88ea-19998a55007b"
+
+# أسرار تُضبط من لوحة Cloudflare (Settings > Variables and Secrets، النوع Secret) ولا تُكتب هنا أبداً:
+#   TURNSTILE_SECRET, IP_SALT
+# إعدادات لوحة الإدارة (تُملأ بعد إعداد Cloudflare Access):
+[vars]
+ACCESS_TEAM = ""
+ACCESS_AUD = ""
+ADMIN_EMAILS = ""

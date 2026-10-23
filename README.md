@@ -26,7 +26,7 @@
 
 ## خطوات التشغيل على Cloudflare
 
-1. أنشئ مشروع Pages مرتبطاً بهذا المستودع، ومجلد الإخراج `site`. الإعدادات (D1 والمتغيرات) تُضبط من لوحة Cloudflare، و`wrangler.example.toml` مرجع لها فقط؛ لا تعِد تسميته إلى `wrangler.toml` إلا بعد ملء المعرفات الحقيقية.
+1. أنشئ مشروع Pages مرتبطاً بهذا المستودع، ومجلد الإخراج `site`. ربط D1 والمتغيرات معرَّف في `wrangler.toml`، والأسرار وحدها تُضبط من لوحة Cloudflare.
 2. `npx wrangler d1 create islamic-history-feedback` ثم ضع المعرّف في `wrangler.toml`، ثم `npx wrangler d1 execute islamic-history-feedback --remote --file=db/schema.sql`.
 3. أنشئ Turnstile widget وضع المفتاح العام مكان `__TURNSTILE_SITE_KEY__` في `site/index.html`، والسري في `TURNSTILE_SECRET`.
 4. أضف `IP_SALT` (نص عشوائي طويل) كسر.
