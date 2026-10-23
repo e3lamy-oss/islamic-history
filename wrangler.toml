@@ -11,6 +11,6 @@ database_id = "02f72066-2cf9-48a4-88ea-19998a55007b"
 #   TURNSTILE_SECRET, IP_SALT
 # إعدادات لوحة الإدارة (تُملأ بعد إعداد Cloudflare Access):
 [vars]
-ACCESS_TEAM = ""
-ACCESS_AUD = ""
-ADMIN_EMAILS = ""
+ACCESS_TEAM = "history-map"
+ACCESS_AUD = "e90b4c416410ecdb24519d7b59a21930b7c5f8cfadd078c60c8e22c03741ac98"
+ADMIN_EMAILS = "e3lamy@gmail.com"
