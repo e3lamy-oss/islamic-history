@@ -1,13 +1,19 @@
 name = "islamic-history"
-pages_build_output_dir = "site"
+main = "worker/index.js"
 compatibility_date = "2026-10-01"
+
+# الموقع ملفات ثابتة من site/. الكود لا يعمل إلا على مسارات الملاحظات ولوحة الإدارة.
+[assets]
+directory = "./site"
+binding = "ASSETS"
+run_worker_first = ["/api/*", "/admin", "/admin/*"]
 
 [[d1_databases]]
 binding = "DB"
 database_name = "islamic-history-feedback"
 database_id = "02f72066-2cf9-48a4-88ea-19998a55007b"
 
-# أسرار تُضبط من لوحة Cloudflare (Settings > Variables and Secrets، النوع Secret) ولا تُكتب هنا أبداً:
+# أسرار تُضبط من لوحة Cloudflare (Worker > Settings > Variables and Secrets، النوع Secret) ولا تُكتب هنا أبداً:
 #   TURNSTILE_SECRET, IP_SALT
 # إعدادات لوحة الإدارة (تُملأ بعد إعداد Cloudflare Access):
 [vars]
