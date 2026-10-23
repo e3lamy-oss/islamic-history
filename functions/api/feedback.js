@@ -38,7 +38,7 @@ export async function onRequestPost({ request, env }) {
   // 4) التحقق من الحقول
   const type = clean(data.type, 20);
   const details = clean(data.details, LIMITS.details);
-  if (!TYPES.has(type) || details.length < 10) return json(400, { error: "invalid" });
+  if (!TYPES.has(type)) return json(400, { error: "invalid" });
   const email = clean(data.email, LIMITS.email);
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json(400, { error: "invalid_email" });
 

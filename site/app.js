@@ -371,7 +371,6 @@
   form.addEventListener("submit", async e => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
-    if ((data.details || "").trim().length < 10) { show("warn", "اكتب تفاصيل الملاحظة في عشرة أحرف على الأقل."); return; }
     const btn = $("#fbSend"); btn.disabled = true; btn.textContent = "جارٍ الإرسال…";
     try {
       const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 8000);
