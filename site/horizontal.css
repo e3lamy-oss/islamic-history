@@ -1,0 +1,99 @@
+/* Horizontal prototype: time runs right-to-left along the x axis, lanes stack vertically. Tokens, buttons and the drawer come from styles.css. */
+:root { --lab-w: 76px; --ruler-h: 46px; }
+
+.happ { height: 100%; height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; }
+.hbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+  padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: var(--surface); border-bottom: 1px solid var(--line); position: relative; z-index: 20;
+}
+.hbar .brand h1 { font-size: 19px; }
+.hbar .tag { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.hbar .tools { display: flex; gap: 6px; margin-inline-start: auto; order: 0; }
+.hbar a.btn { text-decoration: none; color: inherit; }
+.now { flex: 1 1 100%; color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; min-height: 1.2em; }
+.now b { color: var(--ink); font-weight: 600; }
+
+.hwrap { position: relative; min-height: 0; display: grid; }
+.hscroll {
+  position: relative; overflow: auto; background: var(--bg); touch-action: pan-x pan-y;
+  overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+}
+.hscroll.grab { cursor: grabbing; user-select: none; }
+.hcontent { position: relative; min-height: 100%; }
+.gridlines { position: absolute; inset-block: 0; right: 0; left: 0; pointer-events: none; z-index: 0; }
+.gridlines i { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--grid); }
+.gridlines i.major { background: color-mix(in srgb, var(--ink) 13%, transparent); }
+
+/* year ruler: sticky on top while scrolling lanes vertically */
+.ruler {
+  position: sticky; top: 0; z-index: 6; height: var(--ruler-h); background: var(--surface);
+  border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums;
+}
+.ruler .corner {
+  position: sticky; right: 0; z-index: 2; width: var(--lab-w); height: 100%; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center; padding-inline: 10px;
+  background: var(--surface); border-inline-end: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.25;
+}
+.tick { position: absolute; top: 0; height: 100%; transform: translateX(50%); display: flex; flex-direction: column; align-items: center; justify-content: center; white-space: nowrap; pointer-events: none; }
+.tick b { font-size: 12.5px; font-weight: 600; }
+.tick small { font-size: 10.5px; color: var(--muted); }
+.tick::after { content: ""; position: absolute; bottom: 0; width: 1px; height: 6px; background: var(--muted); }
+
+/* lanes */
+.lane { position: relative; border-bottom: 1px solid var(--line); z-index: 1; }
+.lane .lab {
+  position: sticky; right: 0; z-index: 4; width: var(--lab-w); height: 100%; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center; gap: 1px; padding: 4px 8px 4px 6px;
+  background: var(--surface); border-inline-end: 1px solid var(--line); border-inline-start: 4px solid var(--c, var(--muted));
+  font-size: 12.5px; line-height: 1.25;
+}
+.lane .lab strong { font-weight: 600; }
+.lane .lab small { color: var(--muted); font-size: 10.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lane.group .lab { background: var(--bg); }
+.lane-band { position: absolute; top: 4px; bottom: 4px; border-radius: 8px; background: color-mix(in srgb, var(--c) 9%, transparent); pointer-events: none; }
+
+.hitem {
+  position: absolute; box-sizing: border-box; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: start;
+  font: inherit; color: inherit; background: none; z-index: 1;
+}
+.hitem.sel { z-index: 3; }
+/* rulers: a block whose width is the reign */
+.hitem.rb {
+  top: 6px; bottom: 6px; border-radius: 6px; overflow: hidden;
+  background: color-mix(in srgb, var(--c) 16%, var(--raised)); border-inline-start: 3px solid var(--c);
+  padding: 4px 6px; display: flex; flex-direction: column; justify-content: center; line-height: 1.25;
+}
+.hitem.rb .n { font-weight: 600; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hitem.rb .y { font-size: 10.5px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hitem.rb.narrow { padding-inline: 2px; }
+.hitem.rb.narrow .y { display: none; }
+.hitem.rb.tiny { padding: 0; border-inline-start-width: 2px; }
+.hitem.rb.tiny .n, .hitem.rb.tiny .y { display: none; }
+.hitem.rb.sel { outline: 2px solid var(--c); outline-offset: 1px; }
+
+/* events: a pin on the year, label beside it */
+.hitem.ev { height: 26px; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 12.5px; }
+.hitem.ev .dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; background: var(--raised); border: 2px solid var(--c); flex: none; }
+.hitem.ev .t em { font-style: normal; color: var(--muted); font-size: 11px; margin-inline-start: 4px; font-variant-numeric: tabular-nums; }
+.hitem.ev .t { background: color-mix(in srgb, var(--bg) 80%, transparent); border-radius: 4px; padding-inline: 2px; }
+.hitem.ev.sel .dot { background: var(--c); }
+
+/* scholars: a life line from birth to death, name above it */
+.hitem.sc { height: 30px; }
+.hitem.sc .life { position: absolute; bottom: 3px; right: 0; left: 0; height: 5px; border-radius: 3px; background: var(--c-scholar); opacity: 0.75; }
+.hitem.sc .life.approx { background: repeating-linear-gradient(90deg, var(--c-scholar) 0 6px, transparent 6px 9px); }
+.hitem.sc .lbl { position: absolute; top: 0; right: 0; white-space: nowrap; font-size: 12px; }
+.hitem.sc .lbl small { color: var(--muted); font-size: 10.5px; margin-inline-start: 4px; }
+.hitem.sc.sel .life { opacity: 1; height: 7px; }
+
+.cursor { position: absolute; top: var(--ruler-h); bottom: 0; width: 0; border-left: 1.5px dashed color-mix(in srgb, var(--accent) 70%, transparent); pointer-events: none; z-index: 7; }
+.hhint { margin: 0; padding: 6px 16px calc(6px + env(safe-area-inset-bottom, 0px)); font-size: 12px; color: var(--muted); background: var(--surface); border-top: 1px solid var(--line); text-align: center; }
+
+.drawer footer a.btn { text-decoration: none; color: inherit; }
+
+@media (max-width: 720px) {
+  :root { --lab-w: 62px; }
+  .hbar .brand h1 { font-size: 16px; }
+  .lane .lab { font-size: 11.5px; padding-inline: 5px 4px; }
+}
