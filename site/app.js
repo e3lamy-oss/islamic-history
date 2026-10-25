@@ -19,10 +19,12 @@
   const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const h2g = h => Math.round(h * 0.970229 + 621.5643);
+  // السنوات قبل الهجرة تُخزّن صفراً فما دون: 1 ق.هـ = 0، و13 ق.هـ = -12
+  const hj = h => (h <= 0 ? `${1 - h} ق.هـ` : `${h} هـ`);
   const yrs = (x, approx) => {
     const a = approx ? "~" : "";
-    if (x.h[0] === x.h[1]) return `${a}${x.h[0]} هـ / ${a}${x.g[0]} م`;
-    return `${a}${x.h[0]}–${x.h[1]} هـ / ${a}${x.g[0]}–${x.g[1]} م`;
+    if (x.h[0] === x.h[1]) return `${a}${hj(x.h[0])} / ${a}${x.g[0]} م`;
+    return `${a}${hj(x.h[0])}–${hj(x.h[1])} / ${a}${x.g[0]}–${x.g[1]} م`;
   };
 
   const stage = $("#stage"), layer = $("#layer"), axis = $("#axis"), heads = $("#heads");
@@ -48,14 +50,14 @@
   for (const r of D.rulers) {
     const d = dynById[r.dyn];
     const n = el("button", "item ruler" + (r.status === "review" ? " review" : ""),
-      `<span class="n">${esc(r.name)}</span><span class="y">${r.h[0]}–${r.h[1]} هـ</span><span class="cap">${esc(r.cap)}</span>`);
+      `<span class="n">${esc(r.name)}</span><span class="y">${hj(r.h[0])}–${hj(r.h[1])}</span><span class="cap">${esc(r.cap)}</span>`);
     n.style.setProperty("--c", `var(${d.color})`);
     n.setAttribute("aria-label", `${r.name}، ${d.short}، ${yrs(r)}`);
     itemLayer.appendChild(n); nodes.set(keyOf(r), n);
   }
   for (const e of D.events) {
     const c = CAT[e.cat];
-    const n = el("button", "item event", `<span class="dot">${c.icon}</span><span class="t">${esc(e.name)}<em>${e.approx ? "~" : ""}${e.h[0]}</em></span>`);
+    const n = el("button", "item event", `<span class="dot">${c.icon}</span><span class="t">${esc(e.name)}<em>${e.approx ? "~" : ""}${hj(e.h[0])}</em></span>`);
     n.style.setProperty("--c", `var(${c.color})`);
     n.setAttribute("aria-label", `${e.name}، ${yrs(e, e.approx)}`);
     itemLayer.appendChild(n); nodes.set(keyOf(e), n);
@@ -95,7 +97,7 @@
     lanes = []; let x = 0;
     for (const d of D.DYNASTIES) {
       const hidden = !state.show.ruler;
-      lanes.push({ id: d.id, dyn: d, name: d.short, sub: `${d.h[0]}–${d.h[1]} هـ`, x, w: hidden ? 0 : RULER_W, hidden });
+      lanes.push({ id: d.id, dyn: d, name: d.short, sub: `${hj(d.h[0])}–${hj(d.h[1])}`, x, w: hidden ? 0 : RULER_W, hidden });
       if (!hidden) x += RULER_W + GAP;
     }
     const evW = evs.length ? evPack.cols * EV_COL : 0;
@@ -128,10 +130,8 @@
     for (let h = Math.max(first, Math.ceil(state.y0 / step) * step); h <= state.y1; h += step) {
       const y = Y(h); if (y > H + 20) break; if (y < HEAD_H - 4) continue;
       const g = el("div", "grid-line" + (h % (step * 5) === 0 ? " major" : "")); g.style.top = y + "px"; gridLayer.appendChild(g);
-      const t = el("div", "tick", `<b>${h} هـ</b><small>${h2g(h)} م</small>`); t.style.top = y + "px"; axis.appendChild(t);
+      const t = el("div", "tick", `<b>${hj(h)}</b><small>${h2g(h)} م</small>`); t.style.top = y + "px"; axis.appendChild(t);
     }
-    // start marker for 41 AH
-    if (Y(state.y0) >= HEAD_H - 4 && (state.y0 % step) * z > 26 && (step - state.y0 % step) * z > 26) { const t = el("div", "tick", `<b>${state.y0} هـ</b><small>661 م</small>`); t.style.top = Y(state.y0) + "px"; axis.appendChild(t); }
 
     // heads + bands
     heads.innerHTML = "";
@@ -324,7 +324,7 @@
   function drawResults() {
     res.innerHTML = ""; res.hidden = !hits.length;
     hits.forEach((x, i) => {
-      const b = el("button", i === hi ? "on" : "", `<span>${esc(x.name)}</span><small>${x.kind === "ruler" ? esc(dynById[x.dyn].short) : x.kind === "event" ? CAT[x.cat].icon : "عالم"} · ${x.h[0]} هـ</small>`);
+      const b = el("button", i === hi ? "on" : "", `<span>${esc(x.name)}</span><small>${x.kind === "ruler" ? esc(dynById[x.dyn].short) : x.kind === "event" ? CAT[x.cat].icon : "عالم"} · ${hj(x.h[0])}</small>`);
       b.onclick = () => pick(x); res.appendChild(b);
     });
   }
@@ -364,7 +364,7 @@
   const form = $("#fbForm"), fbMsg = $("#fbMsg");
   function openFeedback(item) {
     form.reset(); fbMsg.hidden = true;
-    $("#fbItem").value = item ? `${item.name} (${item.h[0]} هـ)` : "";
+    $("#fbItem").value = item ? `${item.name} (${hj(item.h[0])})` : "";
     $("#fbItemKey").value = item ? keyOf(item) : "";
     openModal("#feedback");
   }
