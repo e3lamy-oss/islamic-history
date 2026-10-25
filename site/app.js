@@ -98,10 +98,11 @@
       lanes.push({ id: d.id, dyn: d, name: d.short, sub: `${d.h[0]}–${d.h[1]} هـ`, x, w: hidden ? 0 : RULER_W, hidden });
       if (!hidden) x += RULER_W + GAP;
     }
-    const evW = evs.length ? evPack.cols * EV_COL : 0;
-    lanes.push({ id: "events", name: "الأحداث الفاصلة", sub: "⚔️ 🏰 📜 ⚠️", x, w: evW, hidden: !evs.length }); x += evW + (evs.length ? GAP * 2 : 0);
+    // أعلام الأمة تلي الخلفاء مباشرة، ثم الأحداث
     const scW = scs.length ? scPack.cols * SC_COL : 0;
-    lanes.push({ id: "scholars", name: "العلماء والأعلام", sub: "من الولادة إلى الوفاة", x, w: scW, hidden: !scs.length }); x += scW;
+    lanes.push({ id: "scholars", name: "أعلام الأمة", sub: "من الولادة إلى الوفاة", x, w: scW, hidden: !scs.length }); x += scW + (scs.length ? GAP * 2 : 0);
+    const evW = evs.length ? evPack.cols * EV_COL : 0;
+    lanes.push({ id: "events", name: "الأحداث الفاصلة", sub: "⚔️ 🏰 📜 ⚠️", x, w: evW, hidden: !evs.length }); x += evW;
     return { evPack, scPack, evs, scs, totalW: x };
   }
 
