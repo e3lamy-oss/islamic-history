@@ -3,20 +3,25 @@
  * "~" في السنوات = تقريبي. لا يُعدّ أي سجل هنا معتمداً قبل مراجعته على المصادر المذكورة.
  */
 (function () {
+  // سجل المصادر الكامل وملاحظات الموثوقية في docs/SOURCES.md.
+  // shamela = رقم الكتاب في shamela.ws/book/<رقم>. aux = مصدر معاصر مساعد لا يُعتمد عليه وحده في تاريخ أو رقم.
   const SOURCES = {
-    tabari: { title: "تاريخ الرسل والملوك", author: "الطبري (ت 310 هـ)" },
-    athir: { title: "الكامل في التاريخ", author: "ابن الأثير (ت 630 هـ)" },
-    kathir: { title: "البداية والنهاية", author: "ابن كثير (ت 774 هـ)" },
-    dhahabi: { title: "تاريخ الإسلام / سير أعلام النبلاء", author: "الذهبي (ت 748 هـ)" },
-    khaldun: { title: "كتاب العبر", author: "ابن خلدون (ت 808 هـ)" },
-    farid: { title: "تاريخ الدولة العلية العثمانية", author: "محمد فريد بك (ت 1338 هـ)" },
-    zirikli: { title: "الأعلام", author: "خير الدين الزركلي (ت 1396 هـ)" },
+    raheeq: { title: "الرحيق المختوم", author: "صفي الرحمن المباركفوري (ت 1427 هـ)", ed: "دار العصماء، دمشق، ط1 1427 هـ", shamela: 9900 },
+    ibnhisham: { title: "السيرة النبوية (سيرة ابن هشام)", author: "ابن هشام (ت 213 هـ)", ed: "مصطفى البابي الحلبي، ط2 1375 هـ، تحقيق السقا والأبياري وشلبي", shamela: 23833 },
+    lulu: { title: "اللؤلؤ المكنون في سيرة النبي المأمون", author: "الشيخ موسى بن راشد العازمي", ed: "المكتبة العامرية، الكويت، ط1 1432 هـ", shamela: 38114 },
+    tabari: { title: "تاريخ الرسل والملوك", author: "الطبري (ت 310 هـ)", ed: "دار المعارف، القاهرة، ط2 1387 هـ، تحقيق محمد أبو الفضل إبراهيم", shamela: 9783 },
+    athir: { title: "الكامل في التاريخ", author: "ابن الأثير (ت 630 هـ)", ed: "دار الكتاب العربي، بيروت، ط1 1417 هـ، تحقيق عمر تدمري", shamela: 21712 },
+    kathir: { title: "البداية والنهاية", author: "ابن كثير (ت 774 هـ)", ed: "دار ابن كثير، دمشق، ط3 1434 هـ", shamela: 30097 },
+    dhahabi: { title: "سير أعلام النبلاء", author: "الذهبي (ت 748 هـ)", ed: "دار الحديث، القاهرة، 1427 هـ", shamela: 22669 },
+    khaldun: { title: "كتاب العبر (تاريخ ابن خلدون)", author: "ابن خلدون (ت 808 هـ)", ed: "دار الفكر، بيروت، ط1 1401 هـ، ضبط خليل شحادة", shamela: 12320 },
+    farid: { title: "تاريخ الدولة العلية العثمانية", author: "محمد فريد بك (ت 1338 هـ)", ed: "دار النفائس، بيروت، ط1 1401 هـ، تحقيق إحسان حقي", shamela: 6638 },
+    zirikli: { title: "الأعلام", author: "خير الدين الزركلي (ت 1396 هـ)", ed: "دار العلم للملايين، ط15 2002 م", shamela: 12286 },
     idhari: { title: "البيان المغرب في أخبار الأندلس والمغرب", author: "ابن عذاري المراكشي" },
     maqrizi: { title: "اتعاظ الحنفا بأخبار الأئمة الفاطميين الخلفا", author: "المقريزي (ت 845 هـ)" },
     bosworth: { title: "The New Islamic Dynasties (مرجع حديث لجداول الأسر الحاكمة)", author: "C. E. Bosworth، 1996" },
-    raheeq: { title: "الرحيق المختوم", author: "صفي الرحمن المباركفوري (ت 1427 هـ)" },
-    ibnhisham: { title: "السيرة النبوية", author: "ابن هشام (ت 218 هـ)" },
-    lulu: { title: "اللؤلؤ المكنون في سيرة النبي المأمون", author: "الشيخ موسى العازمي" }
+    sirjani_andalus: { title: "الأندلس من الفتح إلى السقوط", author: "د. راغب السرجاني", shamela: 21877, aux: true },
+    sirjani_tatar: { title: "التتار من البداية إلى عين جالوت", author: "د. راغب السرجاني", shamela: 37376, aux: true },
+    turbani: { title: "مائة من عظماء أمة الإسلام غيروا مجرى التاريخ", author: "جهاد الترباني", shamela: 14132, aux: true }
   };
 
   const DYNASTIES = [
@@ -203,7 +208,32 @@
     ["constantinople", 857, 1453, "battle", "فتح القسطنطينية", "فتحها السلطان محمد الثاني العثماني.", "القسطنطينية"],
     ["granada", 897, 1492, "calamity", "سقوط غرناطة", "نهاية آخر دولة إسلامية في الأندلس.", "غرناطة"]
   ];
-  const events = E.map(([id, h, g, cat, name, desc, place, approx]) => ({ kind: "event", id, h: [h, h], g: [g, g], cat, name, desc, place, approx: !!approx, src: ["athir", "kathir"], status: "draft" }));
+  // مصادر الحدث حسب عصره، ما لم يُخصَّص له مصدر في EVENT_SRC.
+  const eraSrc = h => h <= 11 ? ["raheeq", "ibnhisham", "lulu"]
+    : h <= 302 ? ["tabari", "athir", "kathir"]
+    : h <= 628 ? ["athir", "kathir"]
+    : ["kathir", "khaldun"];
+  const EVENT_SRC = {
+    andalus92: ["athir", "idhari", "khaldun", "sirjani_andalus"],
+    tours: ["athir", "idhari", "sirjani_andalus"],
+    cordobacal: ["idhari", "khaldun", "sirjani_andalus"],
+    zahra: ["idhari", "khaldun", "sirjani_andalus"],
+    zallaqa: ["athir", "idhari", "sirjani_andalus"],
+    iqab: ["idhari", "khaldun", "sirjani_andalus"],
+    granada: ["khaldun", "sirjani_andalus"],
+    cairo: ["maqrizi", "athir", "kathir"],
+    azhar: ["maqrizi", "athir", "kathir"],
+    baghdad656: ["kathir", "khaldun", "sirjani_tatar"],
+    aynjalut: ["kathir", "khaldun", "sirjani_tatar"],
+    constantinople: ["farid", "khaldun"]
+  };
+  const events = E.map(([id, h, g, cat, name, desc, place, approx]) => ({ kind: "event", id, h: [h, h], g: [g, g], cat, name, desc, place, approx: !!approx, src: EVENT_SRC[id] || eraSrc(h), status: "draft" }));
+
+  // الإحالات الموثقة: { معرف السجل: [[مفتاح المصدر، الجزء، الصفحة المطبوعة، رقم الصفحة في رابط الشاملة]] }.
+  // الصفحة المطبوعة تظهر للقارئ، ورقم الشاملة (اختياري) يفتح الصفحة نفسها لأنه يختلف عن المطبوع.
+  // لا يُضاف هنا إلا ما فُتحت صفحته فعلاً، ويبقى السجل «مسودة» حتى تكتمل إحالاته.
+  const REFS = {};
+  for (const item of [...rulers, ...events]) item.refs = REFS[item.id] || [];
 
   // العلماء: [المعرف، الاسم، الاسم الكامل، ولادة هـ، وفاة هـ، ولادة م، وفاة م، المدينة/المركز العلمي، المجال، المعيار، الأثر، تقريبي]
   const S = [
@@ -239,7 +269,7 @@
     ["ibnkathir", "ابن كثير", "إسماعيل بن عمر بن كثير", 701, 774, 1301, 1373, "دمشق", "التفسير والتاريخ", "encyclopedic", "صاحب «تفسير القرآن العظيم» و«البداية والنهاية»", "~"],
     ["ibnkhaldun", "ابن خلدون", "عبد الرحمن بن محمد بن خلدون", 732, 808, 1332, 1406, "تونس والقاهرة", "التاريخ والاجتماع", "foundational", "مؤسس علم العمران البشري بمقدمته"]
   ];
-  const scholars = S.map(([id, name, full, h0, h1, g0, g1, city, field, crit, work, approx]) => ({ kind: "scholar", id, name, full, h: [h0, h1], g: [g0, g1], city, field, crit, work, approx: !!approx, src: ["dhahabi", "zirikli"], status: "draft" }));
+  const scholars = S.map(([id, name, full, h0, h1, g0, g1, city, field, crit, work, approx]) => ({ kind: "scholar", id, name, full, h: [h0, h1], g: [g0, g1], city, field, crit, work, approx: !!approx, src: ["dhahabi", "zirikli"], refs: REFS[id] || [], status: "draft" }));
 
   window.HISTORY_DATA = { SOURCES, DYNASTIES, rulers, events, scholars, range: [-12, 910] };
 })();
