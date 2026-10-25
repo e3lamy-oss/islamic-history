@@ -243,3 +243,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .star-border::before, .bar::before { animation: none; }
 }
+
+/* روابط المصادر إلى المكتبة الشاملة */
+.srcs a, #srcList a, #srcAuxList a { color: inherit; text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 3px; }
+#srcList .muted, #srcAuxList .muted { color: var(--muted); font-size: 0.9em; }

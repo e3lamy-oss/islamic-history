@@ -18,6 +18,10 @@
   const $ = s => document.querySelector(s);
   const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  // عنوان المصدر رابطاً إلى الشاملة إن وُجد رقمه، وإلى الصفحة نفسها إن أُعطي رقمها في الشاملة.
+  const srcTitle = (src, shamelaPage) => src.shamela
+    ? `<a href="https://shamela.ws/book/${Number(src.shamela)}${shamelaPage ? "/" + Number(shamelaPage) : ""}" target="_blank" rel="noopener">${esc(src.title)}</a>`
+    : esc(src.title);
   const h2g = h => Math.round(h * 0.970229 + 621.5643);
   // السنوات قبل الهجرة تُخزّن صفراً فما دون: 1 ق.هـ = 0، و13 ق.هـ = -12
   const hj = h => (h <= 0 ? `${1 - h} ق.هـ` : `${h} هـ`);
@@ -292,7 +296,11 @@
       if (peers.length) blocks.push(`<div><h3>عاصر من الحكام (${peers.length})</h3><div class="peers">${peers.slice(0, 14).map(peerBtn).join("")}</div></div>`);
     }
     if (item.note) blocks.unshift(`<div class="note">${esc(item.note)}</div>`);
-    const srcs = item.src.map(k => D.SOURCES[k]).map(s => `<li>${esc(s.title)} <span>· ${esc(s.author)}</span></li>`).join("");
+    if (item.refs.length) {
+      const refs = item.refs.map(([k, vol, page, shamelaPage]) => `<li>${srcTitle(D.SOURCES[k], shamelaPage)} <span>· ج${esc(vol)}، ص${esc(page)}</span></li>`).join("");
+      blocks.push(`<div><h3>الإحالات</h3><ul class="srcs">${refs}</ul></div>`);
+    }
+    const srcs = item.src.map(k => D.SOURCES[k]).map(s => `<li>${srcTitle(s)} <span>· ${esc(s.author)}${s.aux ? " (مرجع مساعد)" : ""}</span></li>`).join("");
     blocks.push(`<div><h3>المصادر المرجعية</h3><ul class="srcs">${srcs}</ul></div>`);
     blocks.push(`<div><span class="status">${item.status === "review" ? "تحتاج تدقيقاً إضافياً" : "مسودة بانتظار المراجعة المنهجية"}</span></div>`);
 
@@ -357,7 +365,10 @@
   $("#reportBtn").onclick = () => openFeedback(null);
 
   // sources list in about
-  $("#srcList").innerHTML = Object.values(D.SOURCES).map(s => `<li><b>${esc(s.title)}</b> · ${esc(s.author)}</li>`).join("");
+  const srcLi = s => `<li><b>${srcTitle(s)}</b> · ${esc(s.author)}${s.ed ? ` <span class="muted">(${esc(s.ed)})</span>` : ""}</li>`;
+  const allSrc = Object.values(D.SOURCES);
+  $("#srcList").innerHTML = allSrc.filter(s => !s.aux).map(srcLi).join("");
+  $("#srcAuxList").innerHTML = allSrc.filter(s => s.aux).map(srcLi).join("");
   $("#statLine").textContent = `${D.rulers.length} حاكماً في ${D.DYNASTIES.length} دول، و${D.scholars.length} عالماً، و${D.events.length} حدثاً فاصلاً`;
 
   // ---------- feedback ----------
