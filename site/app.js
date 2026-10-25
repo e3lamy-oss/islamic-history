@@ -95,13 +95,13 @@
     const scPack = pack(scs, s => { const y = (s.h[0] - state.y0) * z; return [y, Math.max(y + (s.h[1] - s.h[0]) * z, y + 40) + 6]; }, 5);
 
     lanes = []; let x = 0;
+    const evW = evs.length ? evPack.cols * EV_COL : 0;
+    lanes.push({ id: "events", name: "الأحداث الفاصلة", sub: "⚔️ 🏰 📜 ⚠️", x, w: evW, hidden: !evs.length }); x += evW + (evs.length ? GAP * 2 : 0);
     for (const d of D.DYNASTIES) {
       const hidden = !state.show.ruler;
       lanes.push({ id: d.id, dyn: d, name: d.short, sub: `${hj(d.h[0])}–${hj(d.h[1])}`, x, w: hidden ? 0 : RULER_W, hidden });
       if (!hidden) x += RULER_W + GAP;
     }
-    const evW = evs.length ? evPack.cols * EV_COL : 0;
-    lanes.push({ id: "events", name: "الأحداث الفاصلة", sub: "⚔️ 🏰 📜 ⚠️", x, w: evW, hidden: !evs.length }); x += evW + (evs.length ? GAP * 2 : 0);
     const scW = scs.length ? scPack.cols * SC_COL : 0;
     lanes.push({ id: "scholars", name: "العلماء والأعلام", sub: "من الولادة إلى الوفاة", x, w: scW, hidden: !scs.length }); x += scW;
     return { evPack, scPack, evs, scs, totalW: x };
