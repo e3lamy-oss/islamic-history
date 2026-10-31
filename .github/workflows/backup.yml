@@ -1,6 +1,8 @@
 # نسخ احتياطي يومي مشفّر لقاعدة الملاحظات.
 # يصدّر D1 إلى SQL، ويشفّره بمفتاح age العام (المفتاح الخاص لا يغادر جهاز المسؤول)،
-# ثم يرفعه إلى حاوية R2 خاصة. البيانات التاريخية نفسها محفوظة بتاريخها الكامل في Git.
+# ثم يحفظه كمرفق (artifact) لهذا التشغيل في GitHub لمدة 90 يوماً. البيانات التاريخية نفسها محفوظة بتاريخها الكامل في Git.
+# إن لم تُضبط الأسرار بعد، يتخطى العمل النسخ بهدوء بدل أن يفشل.
+# الأسرار المطلوبة: CF_BACKUP_TOKEN (صلاحية D1 Edit)، CF_ACCOUNT_ID، BACKUP_AGE_PUBLIC_KEY.
 name: daily-backup
 on:
   schedule: [{ cron: "30 2 * * *" }]
@@ -10,22 +12,39 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
+      - name: Check secrets
+        id: check
+        env:
+          TOKEN: ${{ secrets.CF_BACKUP_TOKEN }}
+          ACCOUNT: ${{ secrets.CF_ACCOUNT_ID }}
+          AGE_KEY: ${{ secrets.BACKUP_AGE_PUBLIC_KEY }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$ACCOUNT" ] && [ -n "$AGE_KEY" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Backup secrets are not set yet; skipping the backup."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: steps.check.outputs.ready == 'true'
         with: { node-version: 22 }
       - name: Export D1
+        if: steps.check.outputs.ready == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_BACKUP_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-        run: npx --yes wrangler@3 d1 export islamic-history-feedback --remote --output=backup.sql
+        run: npx --yes wrangler@4 d1 export islamic-history-feedback --remote --output=backup.sql
       - name: Encrypt
+        if: steps.check.outputs.ready == 'true'
         run: |
           sudo apt-get install -y age
           age -r "${{ secrets.BACKUP_AGE_PUBLIC_KEY }}" -o "feedback-$(date -u +%F).sql.age" backup.sql
           shred -u backup.sql
-      - name: Upload to R2
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_BACKUP_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-        run: |
-          f=$(ls feedback-*.sql.age)
-          npx --yes wrangler@3 r2 object put "islamic-history-backups/$f" --file "$f" --remote
+      - name: Store encrypted backup
+        if: steps.check.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: feedback-backup
+          path: feedback-*.sql.age
+          retention-days: 90
+          if-no-files-found: error

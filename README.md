@@ -12,7 +12,7 @@
 | واجهة الملاحظات | Pages Function (`functions/api/feedback.js`) | تحقق من المصدر، Turnstile، تحديد معدل، استعلامات مُعدّة |
 | قاعدة الملاحظات | Cloudflare D1 (`db/schema.sql`) | للملاحظات وسجل التدقيق فقط |
 | لوحة الإدارة | `site/admin/` + `functions/admin/` خلف Cloudflare Access | تسجيل دخول بتحقق ثنائي إلزامي على الحافة، ثم تحقق ثانٍ من توقيع الرمز داخل الكود |
-| النسخ الاحتياطي | GitHub Actions يومياً (`.github/workflows/backup.yml`) | تصدير D1 مشفّر بـ age إلى R2، إضافة إلى الاسترجاع الزمني المدمج في D1 |
+| النسخ الاحتياطي | GitHub Actions يومياً (`.github/workflows/backup.yml`) | تصدير D1 مشفّر بـ age يُحفظ مرفقاً في GitHub Actions لمدة 90 يوماً، إضافة إلى الاسترجاع الزمني المدمج في D1 |
 
 ## مطابقة متطلبات الأمان
 
@@ -31,7 +31,7 @@
 3. Turnstile: المفتاح العام موضوع في `site/index.html`، والسري في السر `TURNSTILE_SECRET`.
 4. أضف `IP_SALT` (نص عشوائي طويل) كسر.
 5. في Zero Trust أنشئ تطبيق Access للمسار `/admin/*` مع سياسة تفرض التحقق الثنائي، وضع `ACCESS_TEAM` و`ACCESS_AUD` و`ADMIN_EMAILS`.
-6. لنسخ الاحتياط: أنشئ حاوية R2 `islamic-history-backups` ومفتاح age، وأضف أسرار GitHub المذكورة في ملف العمل.
+6. لنسخ الاحتياط: أنشئ مفتاح age ورمز Cloudflare API بصلاحية D1 Edit، وأضف أسرار GitHub المذكورة في ملف العمل. قبل ضبطها يتخطى العمل النسخ دون فشل.
 
 ## التشغيل محلياً
 
